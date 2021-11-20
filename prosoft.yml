@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+        name: prosoft
+        labels:
+                app: prosoft-app
+spec:
+        replicas: 2
+        selector:
+                matchLabels:
+                        app: prosoft-app
+        template:
+                metadata:
+                        labels:
+                                app: prosoft-app
+                spec:
+                        containers:
+                                - name: prosoft-container
+                                  image: onkarkubade/prosoft:4
+                                  ports:
+                                          - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+        name: prosoft-service
+        labels:
+                app: prosoft-app
+spec:
+        selector:
+                app: prosoft-app
+        type: LoadBalancer
+        ports:
+                - protocol: TCP
+                  port: 80
+                  targetPort: 80
